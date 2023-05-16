@@ -1,0 +1,77 @@
+#include <iostream>
+#include <list>
+using namespace std;
+
+struct Node {
+    int label;
+    list<int> neighbours;
+};
+
+struct Graph {
+    int n = 8;
+    Node *nodes = new Node[n];
+
+    void intializenodes() {
+        for (int i = 0; i < n; i++) {
+            nodes[i].label = i + 1;
+        }
+    }
+
+    void addedge(int u, int v) {
+        // Check if edge (u, v) or (v, u) is already present
+        for (int neighbour : nodes[u - 1].neighbours) {
+            if (neighbour == v) {
+                return;
+            }
+        }
+        for (int neighbour : nodes[v - 1].neighbours) {
+            if (neighbour == u) {
+                return;
+            }
+        }
+        // If edge is not already present, add it
+        nodes[u - 1].neighbours.push_back(v);
+        nodes[v - 1].neighbours.push_back(u);
+    }
+
+    void print() {
+        for (int i = 0; i < n; i++) {
+            cout << nodes[i].label << " : ";
+            for (int neighbour : nodes[i].neighbours) {
+                cout << "--> " << neighbour;
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    // Create a new instance of the Graph
+    Graph *g = new Graph;
+
+    // Initialize the nodes in the graph
+    g->intializenodes();
+
+    // Add edges for the graph (undirected)
+    g->addedge(1, 2);   // Add an edge between node 1 and 2
+    g->addedge(1, 3);   // Add an edge between node 1 and 3
+    g->addedge(1, 4);   // Add an edge between node 1 and 4
+    g->addedge(1, 5);   // Add an edge between node 1 and 5
+    g->addedge(2, 3);   // Add an edge between node 2 and 3
+    g->addedge(2, 6);   // Add an edge between node 2 and 6
+    g->addedge(4, 6);   // Add an edge between node 4 and 6
+    g->addedge(4, 7);   // Add an edge between node 4 and 7
+    g->addedge(4, 8);   // Add an edge between node 4 and 8
+    g->addedge(5, 6);   // Add an edge between node 5 and 6
+    g->addedge(5, 7);   // Add an edge between node 5 and 7
+    g->addedge(5, 8);   // Add an edge between node 5 and 8
+
+    // Print the graph adjacency list
+    g->print();
+
+    // Clean up and free the memory
+    delete g;
+
+    // Return 0 to indicate successful execution of the program
+    return 0;
+}
